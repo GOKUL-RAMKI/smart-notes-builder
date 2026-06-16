@@ -14,7 +14,8 @@ from services.subject_service import (
     get_subject_by_id
 )
 from services.config_service import load_api_key, save_api_key
-
+from services.gemini_service import test_connection
+from services.gemini_service import process_notes
 
 # Initialize Flask application
 app = Flask(__name__)
@@ -23,6 +24,16 @@ app = Flask(__name__)
 DB_PATH = "notes.db"
 SUBJECTS_FOLDER = "subjects"
 SCHEMA_FILE = "database/schema.sql"
+
+@app.route("/test-gemini")
+def test_gemini_route():
+
+    try:
+        result = test_connection()
+        return f"<h2>{result}</h2>"
+
+    except Exception as e:
+        return f"<h2>Error</h2><p>{e}</p>"
 
 
 def _initialize_database():
@@ -212,7 +223,91 @@ def upload_page():
     
     return render_template("upload.html", subjects=subjects)
 
+@app.route("/upload", methods=["POST"])
+def process_upload():
 
+    subject_id = request.form.get("subject_id")
+
+    if not subject_id:
+        return "Please select a subject."
+
+    files = request.files.getlist("images")
+
+    files = [
+        f for f in files
+        if f and f.filename
+    ]
+
+    if len(files) == 0:
+        return "Please upload at least one image."
+
+    if len(files) > 8:
+        return "Maximum 8 images allowed."
+
+    allowed_extensions = {
+        "jpg",
+        "jpeg",
+        "png"
+    }
+
+    image_data_list = []
+
+    for file in files:
+
+        extension = (
+            file.filename
+            .rsplit(".", 1)[-1]
+            .lower()
+        )
+
+        if extension not in allowed_extensions:
+            return (
+                "Only JPG, JPEG and PNG files are allowed."
+            )
+
+        image_bytes = file.read()
+
+        if len(image_bytes) > 10 * 1024 * 1024:
+            return (
+                "Image exceeds 10 MB limit."
+            )
+
+        image_data_list.append(
+            {
+                "bytes": image_bytes,
+                "mime_type": file.mimetype
+            }
+        )
+
+    try:
+
+        notes = process_notes(
+            image_data_list
+        )
+
+        return f"""
+        <h1>Generated Notes</h1>
+        <pre>{notes}</pre>
+
+        <br>
+
+        <a href="/upload">
+            Back
+        </a>
+        """
+
+    except Exception as e:
+
+        return f"""
+        <h1>Error</h1>
+        <pre>{str(e)}</pre>
+
+        <br>
+
+        <a href="/upload">
+            Back
+        </a>
+        """
 # ============================================================================
 # Application Initialization
 # ============================================================================

@@ -6,34 +6,89 @@
     <title>Smart Notes Builder - Upload Notes</title>
 </head>
 <body>
+
     <h1>Upload Notes</h1>
-    
-    <!-- Navigation Link -->
-    <a href="{{ url_for('home') }}">Back to Home</a>
-    
-    <!-- Upload Form Placeholder -->
+
+    <a href="{{ url_for('home') }}">
+        Back to Home
+    </a>
+
     <hr>
-    <p>Upload functionality will be implemented here.</p>
-    
-    <form method="POST" action="#" enctype="multipart/form-data">
-        <label for="subject_id">Select Subject:</label>
-        <select name="subject_id" id="subject_id" required>
-            <option value="">-- Choose a subject --</option>
-            {% for subject in subjects %}
-                <option value="{{ subject.id }}">{{ subject.name }}</option>
-            {% endfor %}
-        </select>
+
+    <form
+        method="POST"
+        action="{{ url_for('process_upload') }}"
+        enctype="multipart/form-data">
+
+        <div>
+            <label for="subject_id">
+                Subject:
+            </label>
+
+            <select
+                name="subject_id"
+                id="subject_id"
+                required>
+
+                <option value="">
+                    -- Select Subject --
+                </option>
+
+                {% for subject in subjects %}
+                <option value="{{ subject.id }}">
+                    {{ subject.name }}
+                </option>
+                {% endfor %}
+
+            </select>
+        </div>
+
         <br>
-        
-        <label for="images">Upload Images (JPG, JPEG, PNG):</label>
-        <input type="file" name="images" id="images" accept=".jpg,.jpeg,.png" multiple>
+
+        <div>
+            <label for="images">
+                Upload Images:
+            </label>
+
+            <input
+                type="file"
+                id="images"
+                name="images"
+                accept=".jpg,.jpeg,.png"
+                multiple
+                required>
+        </div>
+
         <br>
-        
-        <label for="preserve_images">Preserve Original Images:</label>
-        <input type="checkbox" name="preserve_images" id="preserve_images" value="true">
+
+        <div>
+            <label>
+                <input
+                    type="checkbox"
+                    name="preserve_images">
+
+                Preserve Original Images
+            </label>
+        </div>
+
         <br>
-        
-        <button type="submit" disabled>Process (Not Yet Implemented)</button>
+
+        <button type="submit">
+            Process Notes
+        </button>
+
     </form>
+
+    <hr>
+
+    <h3>Rules</h3>
+
+    <ul>
+        <li>Minimum 1 image</li>
+        <li>Maximum 8 images</li>
+        <li>Allowed formats: JPG, JPEG, PNG</li>
+        <li>Maximum size: 10 MB per image</li>
+    </ul>
+
 </body>
 </html>
