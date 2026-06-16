@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Notes Builder - {{ subject.name }}</title>
+</head>
+<body>
+    <h1>{{ subject.name }}</h1>
+    
+    <!-- Navigation Link -->
+    <a href="{{ url_for('home') }}">Back to Home</a>
+    
+    <!-- Subject Information -->
+    <hr>
+    <p><strong>Created:</strong> {{ subject.created_at }}</p>
+    <p><strong>Folder:</strong> {{ subject.folder_name }}</p>
+    
+    <!-- Entries Section -->
+    <hr>
+    <h2>Entries</h2>
+    <p>Entries will be displayed here once notes are uploaded.</p>
+    
+    <!-- Action Buttons -->
+    <hr>
+    <button disabled>Download Complete Notes (Not Yet Implemented)</button>
+    
+    <!-- Delete Subject -->
+    <form method="POST" action="{{ url_for('delete_subject_route', subject_id=subject.id) }}" style="display:inline;">
+        <button type="submit" onclick="return confirm('Delete Subject? This action cannot be undone.')">Delete Subject</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Notes Builder - Upload Notes</title>
+</head>
+<body>
+    <h1>Upload Notes</h1>
+    
+    <!-- Navigation Link -->
+    <a href="{{ url_for('home') }}">Back to Home</a>
+    
+    <!-- Upload Form Placeholder -->
+    <hr>
+    <p>Upload functionality will be implemented here.</p>
+    
+    <form method="POST" action="#" enctype="multipart/form-data">
+        <label for="subject_id">Select Subject:</label>
+        <select name="subject_id" id="subject_id" required>
+            <option value="">-- Choose a subject --</option>
+            {% for subject in subjects %}
+                <option value="{{ subject.id }}">{{ subject.name }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        
+        <label for="images">Upload Images (JPG, JPEG, PNG):</label>
+        <input type="file" name="images" id="images" accept=".jpg,.jpeg,.png" multiple>
+        <br>
+        
+        <label for="preserve_images">Preserve Original Images:</label>
+        <input type="checkbox" name="preserve_images" id="preserve_images" value="true">
+        <br>
+        
+        <button type="submit" disabled>Process (Not Yet Implemented)</button>
+    </form>
+</body>
+</html>

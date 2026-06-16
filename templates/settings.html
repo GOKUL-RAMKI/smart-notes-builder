@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Notes Builder - Settings</title>
+</head>
+<body>
+    <h1>Settings</h1>
+    
+    <!-- Navigation Link -->
+    <a href="{{ url_for('home') }}">Back to Home</a>
+    
+    <!-- API Key Form -->
+    <hr>
+    <h2>Gemini API Key</h2>
+    <form method="POST" action="{{ url_for('settings') }}">
+        <label for="gemini_api_key">API Key:</label>
+        <input type="text" id="gemini_api_key" name="gemini_api_key" value="{{ api_key }}" placeholder="Enter your Gemini API Key">
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>
