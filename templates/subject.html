@@ -19,7 +19,28 @@
     <!-- Entries Section -->
     <hr>
     <h2>Entries</h2>
-    <p>Entries will be displayed here once notes are uploaded.</p>
+    <a href="/subject/{{ subject.id }}/download">
+        Download Complete Notes
+    </a>
+
+    {% if entries %}
+    <ul>
+
+        {% for entry in entries %}
+
+            <li>{{ entry }}</li>
+            <a href="/subject/{{ subject.id }}/download/{{ entry }}">
+                Download
+            </a>
+        {% endfor %}
+
+    </ul>
+
+    {% else %}
+
+        <p>No entries found.</p>
+
+    {% endif %}
     
     <!-- Action Buttons -->
     <hr>

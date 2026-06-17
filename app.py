@@ -3,7 +3,13 @@ Smart Notes Builder - Flask Application
 
 A single-user, local-first application for organizing lecture notes using AI processing.
 """
-from services.document_service import create_docx_entry
+from services.document_service import (
+    create_docx_entry,
+    merge_subject_docs
+)
+from services.document_service import (
+    get_subject_entries
+)
 import sqlite3
 from pathlib import Path
 from flask import Flask, render_template, request, redirect, url_for
@@ -16,6 +22,8 @@ from services.subject_service import (
 from services.config_service import load_api_key, save_api_key
 from services.gemini_service import test_connection
 from services.gemini_service import process_notes
+
+from flask import send_file
 
 # Initialize Flask application
 app = Flask(__name__)
@@ -195,8 +203,16 @@ def subject_page(subject_id):
     except Exception as e:
         # Subject not found - redirect to home
         return redirect(url_for("home"))
+
+    subject_folder = (
+        f"subjects/{subject['folder_name']}"
+    )
+
+    entries = get_subject_entries(
+        subject_folder
+    )
     
-    return render_template("subject.html", subject=subject)
+    return render_template("subject.html", subject=subject, entries=entries)
 
 
 # ============================================================================
@@ -334,6 +350,45 @@ def process_upload():
             Back
         </a>
         """
+
+@app.route("/subject/<int:subject_id>/download")
+def download_subject(subject_id):
+
+    subject = get_subject_by_id(
+        subject_id
+    )
+
+    subject_folder = (
+        f"subjects/{subject['folder_name']}"
+    )
+
+    merged_file = merge_subject_docs(
+        subject_folder
+    )
+
+    return send_file(
+        merged_file,
+        as_attachment=True
+    )
+
+@app.route("/subject/<int:subject_id>/download/<path:entry_name>")
+def download_entry(subject_id,entry_name):
+    if ".." in entry_name:
+        return "invalid file", 400
+    if Path(entry_name).name != entry_name:
+        return "invalid file", 400      
+    subject = get_subject_by_id(
+        subject_id
+    )
+    
+    subject_folder = (
+        f"subjects/{subject['folder_name']}"
+    )
+
+    file_path = (Path(subject_folder)/entry_name)
+
+    return send_file(file_path,as_attachment=True)
+
 # ============================================================================
 # Application Initialization
 # ============================================================================
