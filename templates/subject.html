@@ -32,6 +32,11 @@
             <a href="/subject/{{ subject.id }}/download/{{ entry }}">
                 Download
             </a>
+            <form method="POST" action="/subject/{{ subject.id }}/delete/{{ entry }}" style="display:inline;">
+                <button type="submit" onclick="return confirm('Delete Entry? This action cannot be undone.')">
+                    Delete Entry
+                </button>
+            </form>
         {% endfor %}
 
     </ul>
@@ -41,10 +46,6 @@
         <p>No entries found.</p>
 
     {% endif %}
-    
-    <!-- Action Buttons -->
-    <hr>
-    <button disabled>Download Complete Notes (Not Yet Implemented)</button>
     
     <!-- Delete Subject -->
     <form method="POST" action="{{ url_for('delete_subject_route', subject_id=subject.id) }}" style="display:inline;">

@@ -124,7 +124,7 @@ def settings():
             save_api_key(api_key)
         except Exception as e:
             # In case of error, still redirect but API key may not be saved
-            pass
+            print(e)
         
         return redirect(url_for("settings"))
     
@@ -159,27 +159,16 @@ def create_subject_route():
 
     return redirect(url_for("home"))
 
-@app.route("/subjects/delete/<int:subject_id>", methods=["POST"])
+@app.route("/subjects/delete/<int:subject_id>",methods=["POST"])
 def delete_subject_route(subject_id):
-    """
-    Delete subject route (Section 22).
-    
-    POST /subjects/delete/<id>
-    
-    Process:
-    - Delete subject folder
-    - Delete DOCX files
-    - Delete database record
-    - Redirect to home
-    """
+
     try:
         delete_subject(subject_id)
-    except Exception as e:
-        # Error handling - could show error message in future
-        pass
-    
-    return redirect(url_for("home"))
 
+    except Exception as e:
+        print(e)
+
+    return redirect(url_for("home"))
 
 # ============================================================================
 # Routes - Subject Page
@@ -389,6 +378,28 @@ def download_entry(subject_id,entry_name):
 
     return send_file(file_path,as_attachment=True)
 
+import os
+@app.route("/subject/<int:subject_id>/delete/<path:entry_name>", methods=["POST"])
+def delete_entry(subject_id,entry_name):
+    if ".." in entry_name:
+            return "invalid file", 400
+    if Path(entry_name).name != entry_name:
+            return "invalid file", 400      
+    
+    subject = get_subject_by_id(subject_id)
+        
+    subject_folder = (
+            f"subjects/{subject['folder_name']}"
+        )
+    
+    file_path = (Path(subject_folder)/entry_name)
+
+    if not file_path.exists():
+        return "File not found", 404
+
+    os.remove(file_path)
+
+    return redirect(url_for("subject_page",subject_id=subject_id))
 # ============================================================================
 # Application Initialization
 # ============================================================================
