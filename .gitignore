@@ -3,6 +3,8 @@ __pycache__/
 
 notes.db
 config.json
+SMART_NOTES_BUILDER_V1_SPEC.md
+test.py
 
 temp/
 
