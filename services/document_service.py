@@ -45,8 +45,6 @@ def create_docx_entry(subject_folder, notes, images, preserve_images) -> str:
         "Generated Notes",
         level=2
     )
-
-    document.add_paragraph(notes)
     document.add_paragraph(notes)
     print("TYPE:", type(notes))
     print("VALUE:", notes[:200])
