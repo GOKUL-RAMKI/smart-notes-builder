@@ -3,7 +3,7 @@ Smart Notes Builder - Flask Application
 
 A single-user, local-first application for organizing lecture notes using AI processing.
 """
-
+from services.document_service import create_docx_entry
 import sqlite3
 from pathlib import Path
 from flask import Flask, render_template, request, redirect, url_for
@@ -227,7 +227,10 @@ def upload_page():
 def process_upload():
 
     subject_id = request.form.get("subject_id")
-
+    preserve_images = (
+        request.form.get("preserve_images")
+        is not None
+    )
     if not subject_id:
         return "Please select a subject."
 
@@ -284,17 +287,40 @@ def process_upload():
         notes = process_notes(
             image_data_list
         )
+        subject = get_subject_by_id(int(subject_id))
+
+        subject_folder = (f"subjects/{subject["folder_name"]}")
+        print(notes)
+        docx_path = create_docx_entry(
+            subject_folder=subject_folder,
+            notes=notes,
+            images=image_data_list,
+            preserve_images=preserve_images
+        )
+
+        print("DOCX CREATED ",docx_path)
 
         return f"""
-        <h1>Generated Notes</h1>
-        <pre>{notes}</pre>
+            <h1>Notes Saved Successfully</h1>
 
-        <br>
+            <p>
+            DOCX created:
+            <br>
+            {docx_path}
+            </p>
 
-        <a href="/upload">
-            Back
-        </a>
-        """
+            <br>
+
+            <a href="/upload">
+                Upload Another
+            </a>
+
+            <br><br>
+
+            <a href="/">
+                Home
+            </a>
+            """
 
     except Exception as e:
 
