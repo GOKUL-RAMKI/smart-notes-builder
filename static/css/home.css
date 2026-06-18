@@ -1,0 +1,53 @@
+/* Minimal CSS for home page */
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    background-color: #00fff2;
+    
+    color: #1b1b1b;
+}
+
+header {
+    background-color: #002aff;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    color: white;
+}
+
+#page-links {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 100px;
+}
+
+#page-links a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 180px;
+    height: 180px;
+
+    background-color: #002aff;
+    color: white;
+
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.2rem;
+
+    border-radius: 12px;
+
+    transition: transform 0.2s ease,
+                background-color 0.2s ease;
+}
+
+#page-links a:hover {
+    background-color: #001ecc;
+    transform: translateY(-5px);
+}

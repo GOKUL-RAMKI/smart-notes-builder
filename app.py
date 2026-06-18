@@ -2,6 +2,7 @@
 Smart Notes Builder - Flask Application
 A single-user, local-first application for organizing lecture notes using AI processing.
 """
+import os
 from services.document_service import (
     create_docx_entry,
     merge_subject_docs,
@@ -222,7 +223,10 @@ def process_upload():
 def download_subject(subject_id):
     subject = get_subject_by_id(subject_id)
     subject_folder = f"subjects/{subject['folder_name']}"
-    merged_file = merge_subject_docs(subject_folder)
+    try:
+        merged_file = merge_subject_docs(subject_folder)
+    except ValueError as e:
+        return f"<h1>Error</h1><pre>{str(e)}</pre><br><a href='/subject/{subject_id}'>Back</a>"
     return send_file(merged_file, as_attachment=True)
 @app.route("/subject/<int:subject_id>/download/<path:entry_name>")
 def download_entry(subject_id, entry_name):
@@ -232,9 +236,11 @@ def download_entry(subject_id, entry_name):
         return "invalid file", 400
     subject = get_subject_by_id(subject_id)
     subject_folder = f"subjects/{subject['folder_name']}"
+
     file_path = Path(subject_folder) / entry_name
+
     return send_file(file_path, as_attachment=True)
-import os
+
 @app.route("/subject/<int:subject_id>/delete/<path:entry_name>", methods=["POST"])
 def delete_entry(subject_id, entry_name):
     if ".." in entry_name:

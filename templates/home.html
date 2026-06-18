@@ -4,15 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Notes Builder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link href="https://googleapis.com" rel="stylesheet">
 </head>
 <body>
-    <h1>Smart Notes Builder</h1>
+    <header>
+        <h1>Smart Notes Builder</h1>
+    </header>
     
     <!-- Navigation Links -->
-    <div>
-        <a href="{{ url_for('upload_page') }}">Upload Notes</a><br>
-        <a href="{{ url_for('manage_subjects_page') }}">Manage Subjects</a><BR>
-        <a href="{{ url_for('settings') }}">Settings</a><BR>
+    <div id="page-links">
+        <a href="{{ url_for('upload_page') }}">Upload Notes</a>
+        <a href="{{ url_for('manage_subjects_page') }}">Manage Subjects</a>
+        <a href="{{ url_for('settings') }}">Settings</a>
     </div>
 </body>
 </html>
