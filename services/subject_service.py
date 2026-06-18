@@ -295,3 +295,17 @@ def get_subject_by_id(subject_id: int) -> dict:
         "folder_name": row[2],
         "created_at": row[3]
     }
+
+def getSubjectIdByName(subjectName: str) -> int:
+    conn = _get_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute(
+        "SELECT id FROM subjects WHERE name = ?",
+        (subjectName,)
+    )
+    row = cursor.fetchone()
+    conn.close()
+
+    return row[0] if row else None
+

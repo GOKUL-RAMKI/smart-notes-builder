@@ -60,16 +60,18 @@
         </div>
 
         <br>
+        <div id="preserve-controls" style="display:none;">
+            <button type="button" id="select-all-btn">
+                Select All
+            </button>
 
-        <div>
-            <label>
-                <input
-                    type="checkbox"
-                    name="preserve_images">
-
-                Preserve Original Images
-            </label>
+            <button type="button" id="clear-all-btn">
+                Clear All
+            </button>
         </div>
+        <div id="preserve-container">
+        </div>
+        
 
         <br>
 
@@ -89,6 +91,180 @@
         <li>Allowed formats: JPG, JPEG, PNG</li>
         <li>Maximum size: 10 MB per image</li>
     </ul>
+    <script>
 
+        document.getElementById("images").addEventListener(
+                "change",
+                function ()
+                {
+                    const container =
+                        document.getElementById(
+                            "preserve-container"
+                        );
+
+                    container.innerHTML = "";
+
+                    const controls = document.getElementById("preserve-controls");
+
+                    controls.style.display = "block";
+
+                    if (this.files.length === 0)
+                    {
+                        controls.style.display = "none";
+                        return;
+                    }
+
+                    if (this.files.length === 0)
+                    {
+                        return;
+                    }
+
+                    const heading =
+                        document.createElement("h3");
+
+                    heading.textContent =
+                        "Select Images To Preserve";
+
+                    container.appendChild(
+                        heading
+                    );
+
+                    for (
+                        let i = 0;
+                        i < this.files.length;
+                        i++
+                    )
+                    {
+                        const file =
+                            this.files[i];
+
+                        const wrapper =
+                            document.createElement("div");
+
+                        wrapper.style.border =
+                            "1px solid #ccc";
+
+                        wrapper.style.padding =
+                            "10px";
+
+                        wrapper.style.marginBottom =
+                            "10px";
+
+                        wrapper.style.display =
+                            "inline-block";
+
+                        wrapper.style.textAlign =
+                            "center";
+
+                        wrapper.style.marginRight =
+                            "10px";
+
+                        const image =
+                            document.createElement("img");
+
+                        image.style.width =
+                            "150px";
+
+                        image.style.height =
+                            "150px";
+
+                        image.style.objectFit =
+                            "contain";
+
+                        image.style.display =
+                            "block";
+
+                        image.style.marginBottom =
+                            "10px";
+
+                        const reader =
+                            new FileReader();
+
+                        reader.onload =
+                            function(e)
+                            {
+                                image.src =
+                                    e.target.result;
+                            };
+
+                        reader.readAsDataURL(file);
+
+                        const checkbox =
+                            document.createElement(
+                                "input"
+                            );
+
+                        checkbox.type =
+                            "checkbox";
+
+                        checkbox.name =
+                            "preserve_files";
+
+                        checkbox.value =
+                            file.name;
+
+                        const label =
+                            document.createElement(
+                                "label"
+                            );
+
+                        label.textContent =
+                            file.name;
+
+                        wrapper.appendChild(image);
+
+                        wrapper.appendChild(checkbox);
+
+                        wrapper.appendChild(label);
+
+                        container.appendChild(wrapper);
+                    }
+                }
+            );
+        
+        document
+            .getElementById(
+                "select-all-btn"
+            )
+            .addEventListener(
+                "click",
+                function ()
+                {
+                    document
+                        .querySelectorAll(
+                            'input[name="preserve_files"]'
+                        )
+                        .forEach(
+                            checkbox =>
+                            {
+                                checkbox.checked =
+                                    true;
+                            }
+                        );
+                }
+            );
+
+        document
+            .getElementById(
+                "clear-all-btn"
+            )
+            .addEventListener(
+                "click",
+                function ()
+                {
+                    document
+                        .querySelectorAll(
+                            'input[name="preserve_files"]'
+                        )
+                        .forEach(
+                            checkbox =>
+                            {
+                                checkbox.checked =
+                                    false;
+                            }
+                        );
+                }
+            );
+    </script>
 </body>
 </html>

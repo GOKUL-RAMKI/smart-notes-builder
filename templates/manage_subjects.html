@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Subjects - Smart Notes Builder</title>
+</head>
+    <body>
+        <!-- Create Subject Section -->
+        <hr>
+        <h2>Create Subject</h2>
+        <form method="POST" action="{{ url_for('create_subject_route') }}">
+            <input type="text" name="subject_name" placeholder="Subject name" required>
+            <button type="submit">Create</button>
+        </form>
+        
+        <!-- Subjects List -->
+        <hr>
+        <h2>Subjects</h2>
+        {% if subjects %}
+            <ul>
+            {% for subject in subjects %}
+                <li>
+                    <a href="{{ url_for('subject_page', subject_id=subject.id) }}">{{ subject.name }}</a>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No subjects yet. Create one to get started.</p>
+        {% endif %}
+
+    </body>
+</html>

@@ -10,15 +10,62 @@
     
     <!-- Navigation Link -->
     <a href="{{ url_for('home') }}">Back to Home</a>
-    
+    <hr>
+    <p>Get an Gemini API key if u dont have one: <a href="https://aistudio.google.com/api-keys" target="_blank">Get Gemini API key</a></p>
     <!-- API Key Form -->
     <hr>
-    <h2>Gemini API Key</h2>
-    <form method="POST" action="{{ url_for('settings') }}">
-        <label for="gemini_api_key">API Key:</label>
-        <input type="text" id="gemini_api_key" name="gemini_api_key" value="{{ api_key }}" placeholder="Enter your Gemini API Key">
-        <button type="submit">Save</button>
-    </form>
+    
+    <h2>Gemini Settings</h2>
+
+        <form method="POST" action="{{ url_for('settings') }}">
+
+            <label for="gemini_api_key">
+                API Key:
+            </label>
+
+            <input
+                type="text"
+                id="gemini_api_key"
+                name="gemini_api_key"
+                value="{{ api_key }}"
+                placeholder="Enter your Gemini API Key"
+            >
+
+            <br>
+            <br>
+
+            <label for="gemini_model">
+                Gemini Model:
+            </label>
+
+            <select
+                id="gemini_model"
+                name="gemini_model"
+            >
+
+                {% for model in models %}
+
+                <option
+                    value="{{ model }}"
+                    {% if model == current_model %}
+                    selected
+                    {% endif %}
+                >
+                    {{ model }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <br>
+            <br>
+
+            <button type="submit">
+                Save
+            </button>
+
+        </form>
     <br>
     <br>
 

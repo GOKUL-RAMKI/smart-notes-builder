@@ -7,12 +7,13 @@ Handles Gemini API key loading and saving with graceful error handling.
 
 import json
 from pathlib import Path
-
+from google import genai
 
 # Configuration
 CONFIG_FILE = "config.json"
 DEFAULT_CONFIG = {
-    "gemini_api_key": ""
+    "gemini_api_key": "",
+    "gemini_model": "models/gemini-2.5-flash-lite"
 }
 
 
@@ -35,6 +36,41 @@ def _ensure_config_exists() -> None:
         except Exception as e:
             raise Exception(f"Failed to create config.json: {str(e)}")
 
+def get_available_models():
+
+    api_key = load_api_key()
+
+    client = genai.Client(
+        api_key=api_key
+    )
+
+    models = []
+
+    for model in client.models.list():
+
+        name = model.name
+
+        if not name.startswith("models/gemini"):
+            continue
+
+        if "embedding" in name:
+            continue
+
+        if "tts" in name:
+            continue
+
+        if "audio" in name:
+            continue
+
+        if "live" in name:
+            continue
+
+        if "robotics" in name:
+            continue
+
+        models.append(name)
+
+    return sorted(models)
 
 def load_api_key() -> str:
     """
@@ -73,7 +109,29 @@ def load_api_key() -> str:
     except Exception as e:
         # Handle other errors gracefully
         return ""
+    
+def load_model() -> str:
 
+    _ensure_config_exists()
+
+    try:
+
+        with open(
+            CONFIG_FILE,
+            "r",
+            encoding="utf-8"
+        ) as f:
+
+            config_data = json.load(f)
+
+        return config_data.get(
+            "gemini_model",
+            "models/gemini-2.5-flash-lite"
+        )
+
+    except Exception:
+
+        return "models/gemini-2.5-flash-lite"
 
 def save_api_key(api_key: str) -> None:
     """
@@ -115,3 +173,44 @@ def save_api_key(api_key: str) -> None:
     
     except Exception as e:
         raise Exception(f"Failed to save API key: {str(e)}")
+
+def save_model(model_name: str) -> None:
+
+    _ensure_config_exists()
+
+    try:
+
+        try:
+
+            with open(
+                CONFIG_FILE,
+                "r",
+                encoding="utf-8"
+            ) as f:
+
+                config_data = json.load(f)
+
+        except Exception:
+
+            config_data = DEFAULT_CONFIG.copy()
+
+        config_data["gemini_model"] = model_name
+
+        with open(
+            CONFIG_FILE,
+            "w",
+            encoding="utf-8"
+        ) as f:
+
+            json.dump(
+                config_data,
+                f,
+                indent=2,
+                ensure_ascii=False
+            )
+
+    except Exception as e:
+
+        raise Exception(
+            f"Failed to save model: {str(e)}"
+        )

@@ -10,31 +10,9 @@
     
     <!-- Navigation Links -->
     <div>
-        <a href="{{ url_for('upload_page') }}">Upload Notes</a>
-        <a href="{{ url_for('settings') }}">Settings</a>
+        <a href="{{ url_for('upload_page') }}">Upload Notes</a><br>
+        <a href="{{ url_for('manage_subjects_page') }}">Manage Subjects</a><BR>
+        <a href="{{ url_for('settings') }}">Settings</a><BR>
     </div>
-    
-    <!-- Create Subject Section -->
-    <hr>
-    <h2>Create Subject</h2>
-    <form method="POST" action="{{ url_for('create_subject_route') }}">
-        <input type="text" name="subject_name" placeholder="Subject name" required>
-        <button type="submit">Create</button>
-    </form>
-    
-    <!-- Subjects List -->
-    <hr>
-    <h2>Subjects</h2>
-    {% if subjects %}
-        <ul>
-        {% for subject in subjects %}
-            <li>
-                <a href="{{ url_for('subject_page', subject_id=subject.id) }}">{{ subject.name }}</a>
-            </li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No subjects yet. Create one to get started.</p>
-    {% endif %}
 </body>
 </html>
