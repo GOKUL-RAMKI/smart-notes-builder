@@ -2,269 +2,335 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Notes Builder - Upload Notes</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Upload Notes</title>
+
+    <link rel="stylesheet"
+        href="{{ url_for('static',
+        filename='css/theme.css') }}">
+
+    <link rel="stylesheet"
+        href="{{ url_for('static',
+        filename='css/upload.css') }}">
 </head>
 <body>
 
-    <h1>Upload Notes</h1>
+<div class="container">
 
-    <a href="{{ url_for('home') }}">
-        Back to Home
+    <a class="back-link"
+       href="{{ url_for('home') }}">
+        ← Back to Home
     </a>
 
-    <hr>
+    <div class="card">
 
-    <form
-        method="POST"
-        action="{{ url_for('process_upload') }}"
-        enctype="multipart/form-data">
+        <h1>Upload Notes</h1>
 
-        <div>
-            <label for="subject_id">
-                Subject:
-            </label>
+        <form
+            method="POST"
+            action="{{ url_for('upload_page') }}"
+            enctype="multipart/form-data">
 
-            <select
-                name="subject_id"
-                id="subject_id"
-                required>
+            <div class="form-group">
 
-                <option value="">
-                    -- Select Subject --
-                </option>
+                <label for="subject_id">
+                    Subject
+                </label>
 
-                {% for subject in subjects %}
-                <option value="{{ subject.id }}">
-                    {{ subject.name }}
-                </option>
-                {% endfor %}
+                <select
+                    name="subject_id"
+                    id="subject_id"
+                    required>
 
-            </select>
-        </div>
+                    <option value="">
+                        Select Subject
+                    </option>
 
-        <br>
+                    {% for subject in subjects %}
+                    <option value="{{ subject.id }}">
+                        {{ subject.name }}
+                    </option>
+                    {% endfor %}
 
-        <div>
-            <label for="images">
-                Upload Images:
-            </label>
+                </select>
 
-            <input
-                type="file"
-                id="images"
-                name="images"
-                accept=".jpg,.jpeg,.png"
-                multiple
-                required>
-        </div>
+            </div>
 
-        <br>
-        <div id="preserve-controls" style="display:none;">
-            <button type="button" id="select-all-btn">
-                Select All
+            <div class="form-group">
+
+                <label for="images">
+                    Upload Images
+                </label>
+
+                <input
+                    type="file"
+                    id="images"
+                    name="images"
+                    accept=".jpg,.jpeg,.png"
+                    multiple
+                    required>
+
+            </div>
+
+            
+            <div id="preserve-container">
+            </div>
+            <br>
+
+            <div id="preserve-controls"
+                 style="display:none;">
+
+                <button
+                    type="button"
+                    class="secondary-btn"
+                    id="select-all-btn">
+
+                    Select All
+
+                </button>
+
+                <button
+                    type="button"
+                    class="secondary-btn"
+                    id="clear-all-btn">
+
+                    Clear All
+
+                </button>
+
+            </div>
+
+            <br>
+
+            <button
+                type="submit"
+                class="primary-btn">
+
+                Process Notes
+
             </button>
 
-            <button type="button" id="clear-all-btn">
-                Clear All
-            </button>
-        </div>
-        <div id="preserve-container">
-        </div>
+            {% if success %}
+                <div id="upload-success" class="success-box">
+
+                    {{ success }}
+
+                    <br><br>
+
+                    <a href="/subject/{{ subject_id }}/download/{{ file_name }}">
+                        Download {{ file_name }}
+                    </a>
+
+                </div>
+            {% endif %}
+            {% if error %}
+
+                <div id="upload-error" class="error-box">
+                    {{ error }}
+                </div>
+
+            {% endif %}
+        </form>
+
+    </div>
+
+    <div class="rules">
+
+        <h3>Rules</h3>
+
+        <ul>
+            <li>Minimum 1 image</li>
+            <li>Maximum 8 images</li>
+            <li>Allowed formats: JPG, JPEG, PNG</li>
+            <li>Maximum size: 10 MB per image</li>
+        </ul>
+
+    </div>
+
+</div>
+
+<script>
+
+document.getElementById("images")
+.addEventListener(
+    "change",
+    function ()
+    {
+        const container =
+            document.getElementById(
+                "preserve-container"
+            );
+
+        container.innerHTML = "";
+        container.style.display = "grid";
+
+        if (this.files.length === 0)
+        {
+            container.style.display = "none";
+            controls.style.display = "none";
+            return;
+        }
+
+        const controls =
+            document.getElementById(
+                "preserve-controls"
+            );
+
+        controls.style.display =
+            this.files.length > 0
+            ? "block"
+            : "none";
+
+        if (this.files.length === 0)
+        {
+            return;
+        }
+
+        const heading =
+            document.createElement("h3");
+
+        heading.textContent =
+            "Select Images To Preserve";
         
+        container.style.display = "grid";
 
-        <br>
+        container.appendChild(
+            heading
+        );
 
-        <button type="submit">
-            Process Notes
-        </button>
+        for (
+            let i = 0;
+            i < this.files.length;
+            i++
+        )
+        {
+            const file =
+                this.files[i];
 
-    </form>
+            const wrapper =
+                document.createElement("div");
 
-    <hr>
+            wrapper.className =
+                "preserve-card";
 
-    <h3>Rules</h3>
+            const image =
+                document.createElement("img");
 
-    <ul>
-        <li>Minimum 1 image</li>
-        <li>Maximum 8 images</li>
-        <li>Allowed formats: JPG, JPEG, PNG</li>
-        <li>Maximum size: 10 MB per image</li>
-    </ul>
-    <script>
+            const reader =
+                new FileReader();
 
-        document.getElementById("images").addEventListener(
-                "change",
-                function ()
+            reader.onload =
+                function(e)
                 {
-                    const container =
-                        document.getElementById(
-                            "preserve-container"
-                        );
+                    image.src =
+                        e.target.result;
+                };
 
-                    container.innerHTML = "";
+            reader.readAsDataURL(file);
 
-                    const controls = document.getElementById("preserve-controls");
+            const checkbox =
+                document.createElement(
+                    "input"
+                );
 
-                    controls.style.display = "block";
+            checkbox.type =
+                "checkbox";
 
-                    if (this.files.length === 0)
-                    {
-                        controls.style.display = "none";
-                        return;
-                    }
+            checkbox.name =
+                "preserve_files";
 
-                    if (this.files.length === 0)
-                    {
-                        return;
-                    }
+            checkbox.value =
+                file.name;
 
-                    const heading =
-                        document.createElement("h3");
+            const label =
+                document.createElement(
+                    "div"
+                );
 
-                    heading.textContent =
-                        "Select Images To Preserve";
+            label.textContent =
+                file.name;
 
-                    container.appendChild(
-                        heading
-                    );
+            wrapper.appendChild(image);
+            wrapper.appendChild(checkbox);
+            wrapper.appendChild(label);
 
-                    for (
-                        let i = 0;
-                        i < this.files.length;
-                        i++
-                    )
-                    {
-                        const file =
-                            this.files[i];
+            container.appendChild(wrapper);
+        }
+    }
+);
 
-                        const wrapper =
-                            document.createElement("div");
-
-                        wrapper.style.border =
-                            "1px solid #ccc";
-
-                        wrapper.style.padding =
-                            "10px";
-
-                        wrapper.style.marginBottom =
-                            "10px";
-
-                        wrapper.style.display =
-                            "inline-block";
-
-                        wrapper.style.textAlign =
-                            "center";
-
-                        wrapper.style.marginRight =
-                            "10px";
-
-                        const image =
-                            document.createElement("img");
-
-                        image.style.width =
-                            "150px";
-
-                        image.style.height =
-                            "150px";
-
-                        image.style.objectFit =
-                            "contain";
-
-                        image.style.display =
-                            "block";
-
-                        image.style.marginBottom =
-                            "10px";
-
-                        const reader =
-                            new FileReader();
-
-                        reader.onload =
-                            function(e)
-                            {
-                                image.src =
-                                    e.target.result;
-                            };
-
-                        reader.readAsDataURL(file);
-
-                        const checkbox =
-                            document.createElement(
-                                "input"
-                            );
-
-                        checkbox.type =
-                            "checkbox";
-
-                        checkbox.name =
-                            "preserve_files";
-
-                        checkbox.value =
-                            file.name;
-
-                        const label =
-                            document.createElement(
-                                "label"
-                            );
-
-                        label.textContent =
-                            file.name;
-
-                        wrapper.appendChild(image);
-
-                        wrapper.appendChild(checkbox);
-
-                        wrapper.appendChild(label);
-
-                        container.appendChild(wrapper);
-                    }
-                }
-            );
-        
+document
+.getElementById("select-all-btn")
+.addEventListener(
+    "click",
+    function ()
+    {
         document
-            .getElementById(
-                "select-all-btn"
-            )
-            .addEventListener(
-                "click",
-                function ()
-                {
-                    document
-                        .querySelectorAll(
-                            'input[name="preserve_files"]'
-                        )
-                        .forEach(
-                            checkbox =>
-                            {
-                                checkbox.checked =
-                                    true;
-                            }
-                        );
-                }
+        .querySelectorAll(
+            'input[name="preserve_files"]'
+        )
+        .forEach(
+            checkbox =>
+            {
+                checkbox.checked =
+                    true;
+            }
+        );
+    }
+);
+
+document
+.getElementById("clear-all-btn")
+.addEventListener(
+    "click",
+    function ()
+    {
+        document
+        .querySelectorAll(
+            'input[name="preserve_files"]'
+        )
+        .forEach(
+            checkbox =>
+            {
+                checkbox.checked =
+                    false;
+            }
+        );
+    }
+);
+document
+.getElementById("images")
+.addEventListener(
+    "change",
+    function ()
+    {
+        const errorBox =
+            document.getElementById(
+                "upload-error"
             );
 
-        document
-            .getElementById(
-                "clear-all-btn"
-            )
-            .addEventListener(
-                "click",
-                function ()
-                {
-                    document
-                        .querySelectorAll(
-                            'input[name="preserve_files"]'
-                        )
-                        .forEach(
-                            checkbox =>
-                            {
-                                checkbox.checked =
-                                    false;
-                            }
-                        );
-                }
+        if (errorBox)
+        {
+            errorBox.remove();
+        }
+
+        const successBox =
+            document.getElementById(
+                "upload-success"
             );
-    </script>
+
+        if (successBox)
+        {
+            successBox.remove();
+        }
+    }
+);
+</script>
+<script src="{{ url_for(
+    'static',
+    filename='js/theme.js'
+) }}"></script>
 </body>
 </html>

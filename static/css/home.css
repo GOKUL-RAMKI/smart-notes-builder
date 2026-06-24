@@ -1,53 +1,99 @@
-/* Minimal CSS for home page */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    margin: 0;
-    background-color: #00fff2;
-    
-    color: #1b1b1b;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--bg-color);
+    color:  var(--text-color);
+    min-height: 100vh;
 }
 
 header {
-    background-color: #002aff;
-    padding: 20px;
+    background: var(--card-color);
+    padding: 24px;
+    border-bottom: 1px solid #e5e7eb;
     text-align: center;
 }
 
 header h1 {
-    margin: 0;
-    color: white;
+    font-size: 2rem;
 }
 
 #page-links {
+    max-width: 1000px;
+    margin: 80px auto;
     display: flex;
     justify-content: center;
     gap: 30px;
-    margin-top: 100px;
+    flex-wrap: wrap;
 }
 
 #page-links a {
+    width: 220px;
+    height: 220px;
+
     display: flex;
-    justify-content: center;
     align-items: center;
-
-    width: 180px;
-    height: 180px;
-
-    background-color: #002aff;
-    color: white;
+    justify-content: center;
 
     text-decoration: none;
-    font-weight: bold;
-    font-size: 1.2rem;
+    color: var(--text-color);
 
-    border-radius: 12px;
+    background: var(--card-color);
 
-    transition: transform 0.2s ease,
-                background-color 0.2s ease;
+    border-radius: 16px;
+
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+
+    font-size: 1.1rem;
+    font-weight: 600;
+
+    transition: all 0.2s ease;
 }
 
 #page-links a:hover {
-    background-color: #001ecc;
-    transform: translateY(-5px);
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: #ccc;
+    border-radius: 34px;
+}
+
+.slider::before {
+    content: "";
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    left: 4px;
+    bottom: 4px;
+    background: white;
+    border-radius: 50%;
+    transition: .2s;
+}
+
+input:checked + .slider {
+    background: #2563eb;
+}
+
+input:checked + .slider::before {
+    transform: translateX(26px);
 }

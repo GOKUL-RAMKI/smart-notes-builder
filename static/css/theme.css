@@ -1,0 +1,21 @@
+:root {
+    --bg-color: #f4f7fb;
+    --card-color: #ffffff;
+    --text-color: #1f2937;
+    --border-color: #d1d5db;
+
+    --secondary-bg: #e5e7eb;
+    --muted-text: #6b7280;
+    --info-bg: #eff6ff;
+}
+
+body.dark-mode {
+    --bg-color: #121212;
+    --card-color: #1e1e1e;
+    --text-color: #f3f4f6;
+    --border-color: #444444;
+
+    --secondary-bg: #2d2d2d;
+    --muted-text: #a1a1aa;
+    --info-bg: #1e293b;
+}

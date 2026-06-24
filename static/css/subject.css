@@ -1,0 +1,137 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--bg-color, #f4f7fb);
+    color: var(--text-color, #1f2937);
+}
+
+.container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.card {
+    background: var(--card-color, white);
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    text-decoration: none;
+    color: #2563eb;
+    font-weight: 600;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.subject-header {
+    margin-bottom: 20px;
+}
+
+.subject-header h1 {
+    margin-bottom: 10px;
+}
+
+.subject-meta {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    color: var(--muted-text);
+}
+
+.download-all {
+    display: inline-block;
+    margin-top: 20px;
+    text-decoration: none;
+    background: #2563eb;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+}
+
+.download-all:hover {
+    background: #1d4ed8;
+}
+
+.entry-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.entry-card {
+    background: var(--card-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.entry-name {
+    font-weight: 600;
+    margin-bottom: 12px;
+    word-break: break-word;
+}
+
+.entry-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.download-btn {
+    text-decoration: none;
+    background: #2563eb;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+}
+
+.download-btn:hover {
+    background: #1d4ed8;
+}
+
+.delete-btn {
+    border: none;
+    background: #dc2626;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background: #b91c1c;
+}
+
+.subject-delete {
+    margin-top: 30px;
+}
+
+.subject-delete button {
+    border: none;
+    background: #dc2626;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.subject-delete button:hover {
+    background: #b91c1c;
+}
+
+.empty-state {
+    color: var(--muted-text);
+}

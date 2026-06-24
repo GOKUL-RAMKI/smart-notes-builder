@@ -2,75 +2,209 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
     <title>Smart Notes Builder - Settings</title>
+    <link rel="stylesheet"
+          href="{{ url_for( 'static', filename='css/theme.css') }}">
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static',
+        filename='css/settings.css') }}">
 </head>
+
 <body>
-    <h1>Settings</h1>
-    
-    <!-- Navigation Link -->
-    <a href="{{ url_for('home') }}">Back to Home</a>
-    <hr>
-    <p>Get an Gemini API key if u dont have one: <a href="https://aistudio.google.com/api-keys" target="_blank">Get Gemini API key</a></p>
-    <!-- API Key Form -->
-    <hr>
-    
-    <h2>Gemini Settings</h2>
 
-        <form method="POST" action="{{ url_for('settings') }}">
+    <div class="container">
 
-            <label for="gemini_api_key">
-                API Key:
-            </label>
+        <a
+            class="back-link"
+            href="{{ url_for('home') }}">
+            ← Back to Home
+        </a>
+        <div class="card">
+            <div class="form-group">
 
-            <input
-                type="text"
-                id="gemini_api_key"
-                name="gemini_api_key"
-                value="{{ api_key }}"
-                placeholder="Enter your Gemini API Key"
-            >
+                <label>
+                    Dark Mode
+                </label>
 
-            <br>
-            <br>
+                <label class="switch">
 
-            <label for="gemini_model">
-                Gemini Model:
-            </label>
+                    <input
+                        type="checkbox"
+                        id="theme-toggle">
 
-            <select
-                id="gemini_model"
-                name="gemini_model"
-            >
+                    <span class="slider"></span>
 
-                {% for model in models %}
+                </label>
 
-                <option
-                    value="{{ model }}"
-                    {% if model == current_model %}
-                    selected
-                    {% endif %}
-                >
-                    {{ model }}
-                </option>
+        </div>
 
-                {% endfor %}
+            <h1>Settings</h1>
 
-            </select>
+            <p class="subtitle">
+                Configure Gemini API access and model selection.
+            </p>
 
-            <br>
-            <br>
+            <div class="info-box">
 
-            <button type="submit">
-                Save
-            </button>
+                <strong>
+                    Need an API key?
+                </strong>
 
-        </form>
-    <br>
-    <br>
+                <br><br>
 
-    <a href="/test-gemini">
-        Test Gemini Connection
-    </a>
+                <a
+                    href="https://aistudio.google.com/api-keys"
+                    target="_blank">
+
+                    Get Gemini API Key
+
+                </a>
+
+            </div>
+
+            <form
+                method="POST"
+                action="{{ url_for('settings') }}">
+
+                <div class="form-group">
+
+                    <label for="gemini_api_key">
+                        Gemini API Key
+                    </label>
+
+                    <div class="password-container">
+
+                        <input
+                            type="password"
+                            id="gemini_api_key"
+                            name="gemini_api_key"
+                            value="{{ api_key }}"
+                            placeholder="Enter your Gemini API Key">
+
+                        <button
+                            type="button"
+                            id="toggle-api-key"
+                            class="toggle-btn">
+
+                            View
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="gemini_model">
+                        Gemini Model
+                    </label>
+
+                    <select
+                        id="gemini_model"
+                        name="gemini_model">
+
+                        {% for model in models %}
+
+                        <option
+                            value="{{ model }}"
+                            {% if model == current_model %}
+                            selected
+                            {% endif %}
+                        >
+                            {{ model }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <div class="button-row">
+
+                    <button
+                        type="submit"
+                        name="action"
+                        value="save"
+                        class="primary-btn">
+
+                        Save Settings
+
+                    </button>
+
+                    <button
+                        type="submit"
+                        name="action"
+                        value="test"
+                        class="secondary-btn">
+
+                        Test Connection
+
+                    </button>
+
+                </div>
+            </form>
+            {% if test_result %}
+
+                <div
+                    class="{% if test_result.success %}
+                            success-box
+                            {% else %}
+                            error-box
+                            {% endif %}">
+
+                    {{ test_result.message }}
+
+                </div>
+
+            {% elif settings_error %}
+
+                <div class="error-box">
+                    {{ settings_error }}
+                </div>
+
+            {% endif %}
+        </div>
+
+    </div>
+    <script>
+        const apiKeyInput =
+            document.getElementById(
+                "gemini_api_key"
+            );
+
+        const toggleButton =
+            document.getElementById(
+                "toggle-api-key"
+            );
+
+        toggleButton.addEventListener(
+            "click",
+            function ()
+            {
+                if (apiKeyInput.type === "password")
+                {
+                    apiKeyInput.type = "text";
+                    toggleButton.textContent = "Hide";
+                }
+                else
+                {
+                    apiKeyInput.type = "password";
+                    toggleButton.textContent = "View";
+                }
+            }
+        );
+    </script>
+    <script src="{{ url_for(
+        'static',
+        filename='js/theme.js'
+    ) }}"></script>
 </body>
 </html>

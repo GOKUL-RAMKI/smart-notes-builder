@@ -2,54 +2,158 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Notes Builder - {{ subject.name }}</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Smart Notes Builder - {{ subject.name }}
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for(
+          'static',
+          filename='css/theme.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for(
+          'static',
+          filename='css/subject.css') }}">
 </head>
+
 <body>
-    <h1>{{ subject.name }}</h1>
-    
-    <!-- Navigation Link -->
-    <a href="{{ url_for('home') }}">Back to Home</a>
-    
-    <!-- Subject Information -->
-    <hr>
-    <p><strong>Created:</strong> {{ subject.created_at }}</p>
-    <p><strong>Folder:</strong> {{ subject.folder_name }}</p>
-    
-    <!-- Entries Section -->
-    <hr>
-    <h2>Entries</h2>
-    <a href="/subject/{{ subject.id }}/download">
-        Download Complete Notes
+
+<div class="container">
+
+    <a class="back-link"
+       href="{{ url_for('home') }}">
+        ← Back to Home
     </a>
 
-    {% if entries %}
-    <ul>
+    <div class="card">
 
-        {% for entry in entries %}
+        <div class="subject-header">
 
-            <li>{{ entry }}</li>
-            <a href="/subject/{{ subject.id }}/download/{{ entry }}">
-                Download
-            </a>
-            <form method="POST" action="/subject/{{ subject.id }}/delete/{{ entry }}" style="display:inline;">
-                <button type="submit" onclick="return confirm('Delete Entry? This action cannot be undone.')">
-                    Delete Entry
-                </button>
-            </form>
-        {% endfor %}
+            <h1>
+                {{ subject.name }}
+            </h1>
 
-    </ul>
+            <div class="subject-meta">
 
-    {% else %}
+                <span>
+                    Created:
+                    {{ subject.created_at }}
+                </span>
 
-        <p>No entries found.</p>
+                <span>
+                    Folder:
+                    {{ subject.folder_name }}
+                </span>
 
-    {% endif %}
-    
-    <!-- Delete Subject -->
-    <form method="POST" action="{{ url_for('delete_subject_route', subject_id=subject.id) }}" style="display:inline;">
-        <button type="submit" onclick="return confirm('Delete Subject? This action cannot be undone.')">Delete Subject</button>
-    </form>
+            </div>
+
+        </div>
+
+        <a
+            class="download-all"
+            href="/subject/{{ subject.id }}/download">
+
+            Download Complete Notes
+
+        </a>
+
+    </div>
+
+    <div class="card">
+
+        <h2>
+            Entries ({{ entries|length }})
+        </h2>
+
+        <br>
+
+        {% if entries %}
+
+            <div class="entry-list">
+
+                {% for entry in entries %}
+
+                <div class="entry-card">
+
+                    <div class="entry-name">
+                        {{ entry }}
+                    </div>
+
+                    <div class="entry-actions">
+
+                        <a
+                            class="download-btn"
+                            href="/subject/{{ subject.id }}/download/{{ entry }}">
+
+                            Download
+
+                        </a>
+
+                        <form
+                            method="POST"
+                            action="/subject/{{ subject.id }}/delete/{{ entry }}">
+
+                            <button
+                                class="delete-btn"
+                                type="submit"
+                                onclick="return confirm(
+                                'Delete Entry? This action cannot be undone.'
+                                )">
+
+                                Delete
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <p class="empty-state">
+                No entries found.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+    <div class="subject-delete">
+
+        <form
+            method="POST"
+            action="{{ url_for(
+            'delete_subject_route',
+            subject_id=subject.id) }}">
+
+            <button
+                type="submit"
+                onclick="return confirm(
+                'Delete Subject? This action cannot be undone.'
+                )">
+
+                Delete Subject
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+<script src="{{ url_for(
+    'static',
+    filename='js/theme.js'
+) }}"></script>
 </body>
 </html>

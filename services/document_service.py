@@ -8,15 +8,27 @@ from docx.shared import Inches
 from pathlib import Path
 from datetime import datetime
 from docx import Document
+from docxcompose.composer import Composer
 
 def create_docx_entry(subject_folder, notes, images, preserve_files) -> str:
     timestamp = datetime.now()
     filename = timestamp.strftime("%d-%m-%Y_%H-%M-%S.docx")
 
-    subject_folder_path = Path(subject_folder)
-    filepath = subject_folder_path/filename
+    try:
+        subject_folder_path = Path(subject_folder)
+        filepath = subject_folder_path/filename
 
-    document = Document()
+    except Exception as e:
+        raise ValueError(
+            f"Error creating file path: {e}"
+        )
+
+    try:
+        document = Document()
+    except Exception as e:
+        raise ValueError(
+            f"Error creating document: {e}"
+        )
 
     document.add_paragraph("=================================")
     document.add_paragraph(timestamp.strftime("%d %b %Y %H:%M"))
@@ -34,12 +46,15 @@ def create_docx_entry(subject_folder, notes, images, preserve_files) -> str:
         image_stream = io.BytesIO(
                 image["bytes"]
             )
-
-        document.add_picture(
-                image_stream,
-                width=Inches(5)
+        try:
+            document.add_picture(
+                    image_stream,
+                    width=Inches(5)
+                )
+        except Exception as e:
+            raise ValueError(
+                f"Error adding image to document: {e}"
             )
-
         document.add_paragraph("")
 
     document.add_heading(
@@ -47,13 +62,14 @@ def create_docx_entry(subject_folder, notes, images, preserve_files) -> str:
         level=2
     )
     document.add_paragraph(notes)
-    document.save(str(filepath))
+    try:
+        document.save(str(filepath))
+    except Exception as e:
+        raise ValueError(
+            f"Error saving document: {e}"
+        )
 
     return str(filepath)
-
-from pathlib import Path
-from docx import Document
-from docxcompose.composer import Composer
 
 
 def merge_subject_docs(
