@@ -1,85 +1,101 @@
 # Smart Notes Builder
 
-Smart Notes Builder is a local-first Flask application that converts handwritten lecture notes into structured, searchable study notes using Google's Gemini models.
+Smart Notes Builder is a **local-first Flask application** that converts handwritten lecture notes into structured, searchable study notes using Google's Gemini AI models.
 
-The application accepts one or more images of handwritten notes, processes them using Gemini OCR and reasoning capabilities, and generates organized DOCX documents for long-term storage and revision.
+The application accepts one or more images of handwritten notes, extracts and organizes the content using Gemini, and generates well-formatted Microsoft Word (DOCX) documents for revision and long-term storage.
 
 ---
 
 ## Features
 
-### Subject Management
+### 📚 Subject Management
 
-* Create subjects
-* Delete subjects
-* Store notes separately for each subject
+* Create and delete subjects
 * Automatic subject folder creation
+* View all generated notes for each subject
+* Download complete subject notes
+* Delete individual note entries
 
-### AI Note Processing
+### 🤖 AI Note Processing
 
-* Supports JPG, JPEG, and PNG images
-* Multiple image upload (up to 8 images per upload)
+* Supports **JPG**, **JPEG**, and **PNG**
+* Upload up to **8 images** at once
 * Gemini-powered handwriting recognition
 * Automatic spelling correction
 * Duplicate content removal
 * Structured note generation
-* Diagram description generation
-* Table preservation using Markdown-style formatting
-
-### Document Generation
-
-* Generate timestamped DOCX files
+* Diagram explanation generation
+* Table preservation
 * Optional preservation of original uploaded images
+
+### 📄 Document Generation
+
+* Timestamped DOCX generation
 * Download individual lecture notes
-* Merge all lecture notes of a subject into a single document
+* Merge all notes of a subject into a single document
 * Download complete subject notes
 
-### Model Management
+### ⚙️ Gemini Configuration
 
-* Configure Gemini API key
-* Dynamically discover available Gemini models
-* Switch models from the Settings page without changing code
+* Save Gemini API key
+* Automatically discover available Gemini models
+* Switch Gemini models from the Settings page
+* Test Gemini connection directly from the application
 
-### Local-First Design
+### 🎨 Modern Interface
 
-* No cloud storage
-* Notes stored locally
+* Responsive user interface
+* Dark mode / Light mode
+* Image preview before upload
+* Easy navigation between pages
+* Simple local-first workflow
+
+### 💻 Local-First Design
+
 * SQLite database
-* Simple Flask-based architecture
-* Single-user desktop workflow
+* Local document storage
+* No cloud storage required
+* No user account required
+* Designed for personal use
 
 ---
 
-## Technology Stack
+# Technology Stack
 
-### Backend
+## Backend
 
 * Python
 * Flask
 * SQLite
 
-### AI
+## AI
 
 * Google Gemini API
 * google-genai SDK
 
-### Document Processing
+## Document Processing
 
 * python-docx
 * docxcompose
 * Pillow
 
+## Frontend
+
+* HTML5
+* CSS3
+* JavaScript
+
 ---
 
-## Project Structure
+# Project Structure
 
 ```text
 smart_notes/
 │
 ├── app.py
+├── requirements.txt
 ├── config.json
 ├── notes.db
-├── requirements.txt
 │
 ├── database/
 │   └── schema.sql
@@ -90,43 +106,54 @@ smart_notes/
 │   ├── document_service.py
 │   └── subject_service.py
 │
+├── static/
+│   ├── css/
+│   └── js/
+│
 ├── templates/
 │   ├── home.html
 │   ├── upload.html
-│   ├── settings.html
+│   ├── manage_subjects.html
 │   ├── subject.html
-│   └── manage_subjects.html
+│   └── settings.html
 │
 └── subjects/
-    └── <subject folders>
 ```
 
 ---
 
-## Installation
+# Installation
 
-### 1. Clone Repository
+## Clone Repository
 
 ```bash
-git clone <repository-url>
-cd smart_notes
+git clone https://github.com/GOKUL-RAMKI/smart-notes-builder.git
+cd smart-notes-builder
 ```
 
-### 2. Create Virtual Environment
+## Create Virtual Environment
 
 ```bash
 python -m venv .venv
 ```
 
-Activate:
+### Activate
 
-Windows PowerShell:
+Windows PowerShell
 
 ```powershell
 .venv\Scripts\Activate.ps1
 ```
 
-### 3. Install Dependencies
+Linux / macOS
+
+```bash
+source .venv/bin/activate
+```
+
+---
+
+## Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -134,82 +161,92 @@ pip install -r requirements.txt
 
 ---
 
-## Configuration
+# Configuration
 
-### Gemini API Key
-
-Obtain a Gemini API key from:
+Obtain a free Gemini API key from:
 
 https://aistudio.google.com/api-keys
 
-Open:
+Inside the application:
 
-```text
-Settings
 ```
-
-and save your API key.
+Settings
+→ Paste API Key
+→ Select Gemini Model
+→ Save
+→ Test Connection
+```
 
 ---
 
-## Running the Application
+# Running the Application
 
 ```bash
 python app.py
 ```
 
-Default URL:
+Open:
 
-```text
+```
 http://127.0.0.1:5000
 ```
 
 ---
 
-## Usage
+# Usage
 
-### Create a Subject
+## 1. Create a Subject
 
-1. Open Manage Subjects
-2. Create a subject
-3. Open Upload Notes
+* Open **Manage Subjects**
+* Create a subject
 
-### Upload Notes
+## 2. Upload Notes
 
-1. Select subject
-2. Upload images
-3. Choose whether to preserve original images
-4. Submit
+* Select a subject
+* Upload handwritten note images
+* Choose which images to preserve
+* Click **Process Notes**
 
-### Generate Notes
+## 3. Generate Notes
 
-The application will:
+The application automatically:
 
-* Extract text from images
-* Combine information from multiple pages
-* Clean formatting
-* Generate structured notes
-* Save a DOCX document
+* Extracts handwritten text
+* Combines multiple pages
+* Removes duplicate content
+* Corrects spelling
+* Structures the notes
+* Generates a DOCX file
 
-### Download Notes
+## 4. Manage Notes
 
-You can:
-
-* Download individual lecture entries
-* Download complete merged subject notes
-
----
-
-## Limitations
-
-* Maximum 8 images per upload
-* Maximum 10 MB per image
-* Requires an active Gemini API key
-* Single-user application
-* Local storage only
+* Download individual lecture notes
+* Download complete subject notes
+* Delete unwanted note entries
 
 ---
 
-## License
+# Limitations
 
-Personal project for educational and learning purposes.
+* Maximum **8 images** per upload
+* Maximum **10 MB** per image
+* Requires a valid Gemini API key
+* Local-first application
+* Single-user design
+* SQLite database
+
+---
+
+# Future Improvements
+
+* User authentication
+* Cloud deployment
+* Database migration to MySQL/PostgreSQL
+* Cloud file storage
+* Multi-user support
+
+---
+
+# License
+
+This project was developed for educational purposes and personal learning.
