@@ -1,14 +1,16 @@
 __pycache__/
 *.pyc
+*.pyo
+.venv/
 
 notes.db
 config.json
-SMART_NOTES_BUILDER_V1_SPEC.md
-TODO.md
-test.py
 
+subjects/
 temp/
 
 .vscode/
 
-subjects/
+SMART_NOTES_BUILDER_V1_SPEC.md
+TODO.md
+test.py
