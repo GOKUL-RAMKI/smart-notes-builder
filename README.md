@@ -226,27 +226,6 @@ The application automatically:
 
 ---
 
-# Limitations
-
-* Maximum **8 images** per upload
-* Maximum **10 MB** per image
-* Requires a valid Gemini API key
-* Local-first application
-* Single-user design
-* SQLite database
-
----
-
-# Future Improvements
-
-* User authentication
-* Cloud deployment
-* Database migration to MySQL/PostgreSQL
-* Cloud file storage
-* Multi-user support
-
----
-
 # License
 
 This project was developed for educational purposes and personal learning.
