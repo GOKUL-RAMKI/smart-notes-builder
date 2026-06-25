@@ -8,7 +8,7 @@ The application accepts one or more images of handwritten notes, extracts and or
 
 ## Features
 
-### 📚 Subject Management
+###  Subject Management
 
 * Create and delete subjects
 * Automatic subject folder creation
@@ -16,7 +16,7 @@ The application accepts one or more images of handwritten notes, extracts and or
 * Download complete subject notes
 * Delete individual note entries
 
-### 🤖 AI Note Processing
+###  AI Note Processing
 
 * Supports **JPG**, **JPEG**, and **PNG**
 * Upload up to **8 images** at once
@@ -28,21 +28,21 @@ The application accepts one or more images of handwritten notes, extracts and or
 * Table preservation
 * Optional preservation of original uploaded images
 
-### 📄 Document Generation
+###  Document Generation
 
 * Timestamped DOCX generation
 * Download individual lecture notes
 * Merge all notes of a subject into a single document
 * Download complete subject notes
 
-### ⚙️ Gemini Configuration
+###  Gemini Configuration
 
 * Save Gemini API key
 * Automatically discover available Gemini models
 * Switch Gemini models from the Settings page
 * Test Gemini connection directly from the application
 
-### 🎨 Modern Interface
+###  Modern Interface
 
 * Responsive user interface
 * Dark mode / Light mode
@@ -50,7 +50,7 @@ The application accepts one or more images of handwritten notes, extracts and or
 * Easy navigation between pages
 * Simple local-first workflow
 
-### 💻 Local-First Design
+###  Local-First Design
 
 * SQLite database
 * Local document storage
